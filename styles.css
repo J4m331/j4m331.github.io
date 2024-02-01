@@ -9,6 +9,11 @@ p{
 	font-family:Verdana;
 }
 
+#ParagraphIntro{
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
 #Paragraph{
 	padding-left: 40px;
 	padding-right: 40px;
