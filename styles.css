@@ -2,9 +2,43 @@ body{
 	text-align: center;
 	background-color: #000000;
 	color: #ffffff;
+	font-family:Helvetica;
+}
+
+p{
+	font-family:Verdana;
+}
+
+#Paragraph{
+	padding-left: 40px;
+	padding-right: 40px;
+}
+
+#Navbar{
+	background-color: #8C1C29;
+	padding: 10px;
 }
 
 #NavbarLogo{
 	width: 50px;
 	height: 50px;
 }
+
+#ActiveSite{
+	color: #EFEFEF;
+	padding: 10px;
+	background-color: #7B85A5;
+	text-decoration: none;
+	font-size: larger;
+}
+
+#InactiveSite{
+	color: #7B85A5;
+	padding: 5px;
+	text-decoration: none;
+}
+
+/*1086DE Augustine Blue*/
+/*8C1C29 JacketRed*/
+/*7B8EA5 JacketGray*/
+/*EFEFEF Augustine White*/
