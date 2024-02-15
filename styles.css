@@ -19,28 +19,48 @@ p{
 	padding-right: 40px;
 }
 
-#Navbar{
+.Navbar{
 	background-color: #8C1C29;
 	padding: 10px;
 }
 
-#NavbarLogo{
-	width: 50px;
-	height: 50px;
+.NavbarLogo{
+	width: 75px;
+	height: 75px;
+	padding: 10px;
+}
+
+.NavbarLogo:hover{
+	border-style: double;
+	border-color: #7B85A5;
+	padding: 5px;
 }
 
 #ActiveSite{
 	color: #EFEFEF;
 	padding: 10px;
 	background-color: #7B85A5;
+	border-radius: 10px;
 	text-decoration: none;
 	font-size: larger;
+}
+
+#ActiveSite:hover{
+	color:#e3e3e3;
+	background-color: #5e657d;
 }
 
 #InactiveSite{
 	color: #7B85A5;
 	padding: 5px;
 	text-decoration: none;
+	border-width: 5px;
+	border-radius: 5px;
+	border-color: #7B85A5;
+}
+
+#InactiveSite:hover{
+	color:#5e657d;
 }
 
 /*1086DE Augustine Blue*/
