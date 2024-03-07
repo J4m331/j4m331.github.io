@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+
+    <style>
+        *{
+            background-color: black;
+            color: white;
+            font-family: Helvetica;
+            text-align: center;
+        }
+
+        button{
+            padding-left: 25px;
+            padding-right: 25px;
+        }
+
+        #Joke{
+            font-family: 'Times New Roman';
+            margin-left: 15%;
+            margin-right: 15%;
+        }
+    </style>
+
+    <body>
+        <h1>Dark Jokes Generator</h1>
+        <nav>
+        <button onclick="getJoke()"><h3>Get me a Joke</h3></button>
+        <button><h3><a href="/Projects/Projects.html">I want to Leave</a></h3></button>
+        </nav>
+        <div id="Joke">
+
+        </div>
+
+    </body>
+
+    <script>
+        function writeJoke(joke){
+            let jokeResult = document.querySelector('#Joke');
+            let html = '';
+
+            html+=`<p>${joke.setup}</p><p>${joke.delivery}</p>`;
+            
+            jokeResult.innerHTML = html;
+        }
+
+        async function getJoke(){
+            const responce = await fetch('https://v2.jokeapi.dev/joke/Dark?type=twopart');
+            const data = await responce.json();
+            writeJoke(data);
+        }
+        getJoke();
+    </script>
+</html>
