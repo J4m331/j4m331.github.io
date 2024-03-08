@@ -40,6 +40,10 @@
         function writeJoke(joke){
             let jokeResult = document.querySelector('#Joke');
             let html = '';
+            if(joke.type === 'single'){
+                html+=`<p>${joke.joke}</p>`;
+            }
+            else
 
             html+=`<p>${joke.setup}</p><p>${joke.delivery}</p>`;
             
@@ -47,7 +51,7 @@
         }
 
         async function getJoke(){
-            const responce = await fetch('https://v2.jokeapi.dev/joke/Dark?type=twopart');
+            const responce = await fetch('https://v2.jokeapi.dev/joke/Dark');
             const data = await responce.json();
             writeJoke(data);
         }
