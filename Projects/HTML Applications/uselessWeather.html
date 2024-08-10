@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+
+    <style>
+        *{
+            background-color: black;
+            color: white;
+        }
+    </style>
+
+    <body>
+        <h1>Useless Weather</h1>
+        <div id="WeatherInfo">
+
+        </div>
+
+        <!--
+            Info Card
+            
+        <div>
+            <h2>Time : ${}</h2>
+            <h3>Temperature   : ${}°C</h3>
+            <h3>It feels like : ${}°C</h3>
+            <h2>Is day        : ${}</h2>
+            <h2>Wind Speed    : ${}km/hr</h2>
+        </div>
+
+        -->
+        
+
+    </body>
+
+    <script>
+        function displayInfo(info){
+            let display = document.querySelector(`#WeatherInfo`);
+            let displayInfoTile = ``;
+
+            let timestamp = info.current.time;
+            var date = new Date(timestamp * 1000);
+            var hour = date.getHours();
+            var minute = date.getMinutes();
+
+            console.log(hour);
+            console.log(minute);
+
+            displayInfoTile += `
+            <div>
+                <h2>Time : ${hour}:${minute}</h2>
+                <h3>Temperature   : ${info.current.temperature_2m}°C</h3>
+                <h3>It feels like : ${info.current.apparent_temperature}°C</h3>
+                <h3>Is day        : ${info.current.is_day}</h3>
+                <h3>Wind Speed    : ${info.current.wind_speed_10m}km/hr</h3>
+            </div>`;
+
+            display.innerHTML = displayInfoTile;
+        }
+
+        function setNumbers(){
+            let latitude = Math.floor(Math.random() * 91);
+            let latInv = Math.floor(Math.random() * 2);
+            let longitude = Math.floor(Math.random() * 181);
+            let lonInv = Math.floor(Math.random() * 2);
+
+            if(latInv === 1){
+                latitude = latitude * -1;
+            }
+            if(lonInv === 1){
+                longitude = longitude * -1;
+            }
+            
+        }
+
+        async function fetchInfo(){
+            let latitude = 0;
+            let longitude = 0;
+            //setNumbers(latitude,longitude);
+            //10.163188022378257, -61.440930127254724
+            //const responce = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,is_day,rain,wind_speed_10m,wind_direction_10m&timezone=auto&forecast_days=1`);
+            //const responce = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,is_day,rain,wind_speed_10m,wind_direction_10m&timeformat=unixtime&timezone=auto&forecast_days=1`);
+            
+            const responce = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=10.163188022378257&longitude=-61.440930127254724&current=temperature_2m,apparent_temperature,is_day,rain,wind_speed_10m,wind_direction_10m&timeformat=unixtime&timezone=auto&forecast_days=1`);
+            
+            const data = await responce.json();
+            displayInfo(data);
+        }
+
+        //setNumbers();
+        fetchInfo();
+    </script>
+</html>

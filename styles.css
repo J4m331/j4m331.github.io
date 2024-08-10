@@ -40,6 +40,16 @@ a{
 	padding: 5px;
 }
 
+.ProjectLink{
+	/*width: 200px;*/
+	/*height: 75px;*/
+	margin-left: auto;
+	padding-left: 50px;
+	padding-right: 50px;
+	margin-right: auto;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
 #ActiveSite{
 	color: #EFEFEF;
 	padding: 10px;
@@ -61,6 +71,10 @@ a{
 	border-width: 5px;
 	border-radius: 5px;
 	border-color: #7B85A5;
+}
+
+#DisplayArea{
+	display: grid;
 }
 
 #InactiveSite:hover{
