@@ -14,26 +14,41 @@
 
         #Tile{
             text-align: left;
-            border: 1cm solid;
+            border: 3px solid;
+            border-radius: 24px;
             border-color: white;
             color: r;
             width: 750px;
             margin: auto;
         }
+
+        #Tile button{
+            align-self: center;
+            align-content: center;
+            color: red;
+            padding-left: 3%;
+        }
+
+        #Tile #Time{
+            text-align: center;
+        }
         
         #Tile h2{
             text-align: left;
             color: red;
+            padding-left: 3%;
         }
         
         #Tile h3{
             text-align: left;
             color: red;
+            padding-left: 3%;
         }
         
         #Tile h5{
             text-align: left;
             color: red;
+            padding-left: 3%;
         }
     </style>
 
@@ -79,14 +94,36 @@
             //WindIDrection
             let windDirectionData = info.current.wind_direction_10m;
             let windDirection = ``;
-            
-            //Note to self, fix Code to make your own solution dumbass
-            const directions = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
-            const numDirections = directions.length;
-            const sector = Math.round((windDirectionData + 11.25) % 360 / (360 / numDirections));
-            windDirection = directions[sector % numDirections];
 
-            //console.log(windDirection);
+            if(windDirectionData > -1 && windDirectionData < 23){
+                windDirection = "N";
+            }
+            if(windDirectionData > 22 && windDirectionData < 68){
+                windDirection = "NE";
+            }
+            if(windDirectionData > 67 && windDirectionData < 113){
+                windDirection = "E";
+            }
+            if(windDirectionData > 112 && windDirectionData < 158){
+                windDirection = "SE";
+            }
+            if(windDirectionData > 157 && windDirectionData < 203){
+                windDirection = "S";
+            }
+            if(windDirectionData > 202 && windDirectionData < 248){
+                windDirection = "SW";
+            }
+            if(windDirectionData > 247 && windDirectionData < 293){
+                windDirection = "W";
+            }
+            if(windDirectionData > 292 && windDirectionData < 338){
+                windDirection = "NW";
+            }
+            if(windDirectionData > 337 && windDirectionData < 360){
+                windDirection = "N";
+            }
+
+            console.log(windDirection);
 
             
             //Display
@@ -95,10 +132,11 @@
 
             displayInfoTile += `
             <div id="Tile">
-                <h2>Time recorded   : [${hour}:${minute}]</h2>
+                <h1 id = "Time">[${hour}:${minute}]</h1>
+                <h6 id = "Time">(Time recorded)</h6>
                 <h3>Temperature     : ${info.current.temperature_2m}°C</h3>
                 <h5>It feels like ${info.current.apparent_temperature}°C</h5>
-                <h3>Is day          : ${info.current.is_day}</h3>
+                <button><h3>Is day          : ${info.current.is_day}</h3></button>
                 <h3>Humidity        : ${info.current.relative_humidity_2m}%</h3>
                 <h3>Rain            : ${info.current.rain} mm</h3>
                 <h3>Wind Speed      : ${info.current.wind_speed_10m}km/hr</h3>
