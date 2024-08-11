@@ -60,15 +60,18 @@
 
         <!--
             Info Card
-            
-        <div id="Tile">
-            <h2>Time : ${}</h2>
-            <h3>Temperature   : ${}°C</h3>
-            <h3>It feels like : ${}°C</h3>
-            <h2>Is day        : ${}</h2>
-            <h2>Humidity     : ${}</h2>
-            <h2>Wind Speed    : ${}km/hr</h2>
-        </div>
+             <div id="Tile">
+                <h1 id = "Time">[${hour}:${minute}]</h1>
+                <h6 id = "Time">(Time recorded)</h6>
+                <h3>Temperature     : ${weatherInfo.current.temperature_2m}°C</h3>
+                <h5>It feels like ${weatherInfo.current.apparent_temperature}°C</h5>
+                <button><h3>Is day          : ${weatherInfo.current.is_day}</h3></button>
+                <h3>Humidity        : ${weatherInfo.current.relative_humidity_2m}%</h3>
+                <h3>Rain            : ${weatherInfo.current.rain} mm</h3>
+                <h3>Wind Speed      : ${weatherInfo.current.wind_speed_10m}km/hr</h3>
+                <h3>Wind Direction  : ${windDirection}</h3>
+                <h3>Location        : ${region} ${locationData.address.country}</h3>
+            </div>
 
         -->
 
@@ -156,16 +159,23 @@
         }
 
         function setNumbers(){
+            /*
             let latitude = Math.floor(Math.random() * 91);
             let latInv = Math.floor(Math.random() * 2);
             let longitude = Math.floor(Math.random() * 181);
             let lonInv = Math.floor(Math.random() * 2);
+            */
+
+            let latitude = Math.random() * (90 - 0) + 0;
+            let latInv = Math.floor(Math.random() * 2);
+            let longitude = Math.random() * (180 - 0) + 0;
+            let lonInv = Math.floor(Math.random() * 2);
 
             if(latInv === 1){
-                latitude = latitude * -1;
+                latitude = latitude * -1.00;
             }
             if(lonInv === 1){
-                longitude = longitude * -1;
+                longitude = longitude * -1.00;
             }
             
             return [latitude,longitude];
