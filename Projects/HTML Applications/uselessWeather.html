@@ -134,8 +134,26 @@
             if(locationData.error == "Unable to geocode"){
                 fetchInfo();
             }
+            
+            let areaState = locationData.address.state + ",";
+            let areaRegion = locationData.address.region + ",";
+            let areaCounty = locationData.address.county + ",";
 
-            let region = locationData.address.state + ",";
+            
+            if(locationData.address.state == null){
+                areaState = "";
+            }
+            if(locationData.address.region == null){
+                areaRegion = "";
+            }
+            if(locationData.address.county == null){
+                areaCounty = "";
+            }
+
+            console.log(locationData.address.region);
+            console.log(locationData.address.state);
+            console.log(locationData.address.state_district);
+            console.log(locationData.address.county);
             
             //Display
             let display = document.querySelector(`#WeatherInfo`);
@@ -152,20 +170,13 @@
                 <h3>Rain            : ${weatherInfo.current.rain} mm</h3>
                 <h3>Wind Speed      : ${weatherInfo.current.wind_speed_10m}km/hr</h3>
                 <h3>Wind Direction  : ${windDirection}</h3>
-                <h3>Location        : ${region} ${locationData.address.country}</h3>
+                <h3>Location        : ${areaCounty} ${areaRegion} ${areaState} ${locationData.address.country}</h3>
             </div>`;
 
             display.innerHTML = displayInfoTile;
         }
 
         function setNumbers(){
-            /*
-            let latitude = Math.floor(Math.random() * 91);
-            let latInv = Math.floor(Math.random() * 2);
-            let longitude = Math.floor(Math.random() * 181);
-            let lonInv = Math.floor(Math.random() * 2);
-            */
-
             let latitude = Math.random() * (90 - 0) + 0;
             let latInv = Math.floor(Math.random() * 2);
             let longitude = Math.random() * (180 - 0) + 0;
@@ -186,7 +197,7 @@
             let longitude = 0;
             
             //T&T data for testing
-            //let coordinate = [10.16318802237825710.16,-61.440930127254724];
+            //let coordinate = [10.163188022378257,-61.440930127254724];
 
             let coordinate = setNumbers();
 
@@ -198,11 +209,17 @@
             //setNumbers(latitude,longitude);
             //10.163188022378257, -61.440930127254724
 
+            const locationResponce = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${coordinate[0]}&lon=${coordinate[1]}&format=json`);
+            const locationData = await locationResponce.json();
+            if(locationData.error!=null){
+                console.log("No");
+            }
+            else{
+                console.log("Yes");
+            }
             const weatherResponce = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${coordinate[0]}&longitude=${coordinate[1]}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,wind_speed_10m,wind_direction_10m&timeformat=unixtime&timezone=auto&forecast_days=1`);
             const weatherData = await weatherResponce.json();
             
-            const locationResponce = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${coordinate[0]}&lon=${coordinate[1]}&format=json`);
-            const locationData = await locationResponce.json();
 
             displayInfo(weatherData,locationData);
         }
