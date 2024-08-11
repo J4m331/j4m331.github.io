@@ -127,11 +127,12 @@
 
             console.log(windDirection);
             
+            //Location
             if(locationData.error == "Unable to geocode"){
-                console.log("This aint working out cheif");
                 fetchInfo();
             }
 
+            let region = locationData.address.state + ",";
             
             //Display
             let display = document.querySelector(`#WeatherInfo`);
@@ -148,7 +149,7 @@
                 <h3>Rain            : ${weatherInfo.current.rain} mm</h3>
                 <h3>Wind Speed      : ${weatherInfo.current.wind_speed_10m}km/hr</h3>
                 <h3>Wind Direction  : ${windDirection}</h3>
-                <h3>Location        : ${locationData.address.state} , ${locationData.address.country}</h3>
+                <h3>Location        : ${region} ${locationData.address.country}</h3>
             </div>`;
 
             display.innerHTML = displayInfoTile;
