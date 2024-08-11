@@ -76,10 +76,10 @@
     </body>
 
     <script>
-        function displayInfo(info){
+        function displayInfo(weatherInfo,locationData){
 
             //Time
-            let timestamp = info.current.time;
+            let timestamp = weatherInfo.current.time;
             var date = new Date(timestamp * 1000);
             var hour = date.getHours();
             var minute = date.getMinutes();
@@ -92,7 +92,7 @@
             }
 
             //WindIDrection
-            let windDirectionData = info.current.wind_direction_10m;
+            let windDirectionData = weatherInfo.current.wind_direction_10m;
             let windDirection = ``;
 
             if(windDirectionData > -1 && windDirectionData < 23){
@@ -124,6 +124,11 @@
             }
 
             console.log(windDirection);
+            
+            if(locationData.error == "Unable to geocode"){
+                console.log("This aint working out cheif");
+                fetchInfo();
+            }
 
             
             //Display
@@ -134,13 +139,14 @@
             <div id="Tile">
                 <h1 id = "Time">[${hour}:${minute}]</h1>
                 <h6 id = "Time">(Time recorded)</h6>
-                <h3>Temperature     : ${info.current.temperature_2m}°C</h3>
-                <h5>It feels like ${info.current.apparent_temperature}°C</h5>
-                <button><h3>Is day          : ${info.current.is_day}</h3></button>
-                <h3>Humidity        : ${info.current.relative_humidity_2m}%</h3>
-                <h3>Rain            : ${info.current.rain} mm</h3>
-                <h3>Wind Speed      : ${info.current.wind_speed_10m}km/hr</h3>
+                <h3>Temperature     : ${weatherInfo.current.temperature_2m}°C</h3>
+                <h5>It feels like ${weatherInfo.current.apparent_temperature}°C</h5>
+                <button><h3>Is day          : ${weatherInfo.current.is_day}</h3></button>
+                <h3>Humidity        : ${weatherInfo.current.relative_humidity_2m}%</h3>
+                <h3>Rain            : ${weatherInfo.current.rain} mm</h3>
+                <h3>Wind Speed      : ${weatherInfo.current.wind_speed_10m}km/hr</h3>
                 <h3>Wind Direction  : ${windDirection}</h3>
+                <h3>Location        : ${locationData.address.state} , ${locationData.address.country}</h3>
             </div>`;
 
             display.innerHTML = displayInfoTile;
@@ -159,11 +165,19 @@
                 longitude = longitude * -1;
             }
             
+            return [latitude,longitude];
         }
 
         async function fetchInfo(){
             let latitude = 0;
             let longitude = 0;
+            
+            //T&T data for testing
+            //let coordinate = [10.16,-61.44];
+
+            let coordinate = setNumbers()
+
+            console.log(coordinate);
 
             //let currentPosition = navigator.geolocation.getCurrentPosition();
 
@@ -171,15 +185,15 @@
             //setNumbers(latitude,longitude);
             //10.163188022378257, -61.440930127254724
 
-            //const responce = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,is_day,rain,wind_speed_10m,wind_direction_10m&timezone=auto&forecast_days=1`);
+            //const responce = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=10.163188022378257&longitude=-61.440930127254724&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,wind_speed_10m,wind_direction_10m&timeformat=unixtime&timezone=auto&forecast_days=1`);
             
-            //const responce = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,is_day,rain,wind_speed_10m,wind_direction_10m&timeformat=unixtime&timezone=auto&forecast_days=1`);
+            const weatherResponce = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${coordinate[0]}&longitude=${coordinate[1]}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,wind_speed_10m,wind_direction_10m&timeformat=unixtime&timezone=auto&forecast_days=1`);
+            const locationResponce = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${coordinate[0]}&lon=${coordinate[1]}&format=json`);
+            //const locationResponce = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=10&lon=-61&format=json`);
             
-            //const responce = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=10.163188022378257&longitude=-61.440930127254724&current=temperature_2m,apparent_temperature,is_day,rain,wind_speed_10m,wind_direction_10m&timeformat=unixtime&timezone=auto&forecast_days=1`);
-            
-            const responce = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=10.163188022378257&longitude=-61.440930127254724&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,wind_speed_10m,wind_direction_10m&timeformat=unixtime&timezone=auto&forecast_days=1`);
-            const data = await responce.json();
-            displayInfo(data);
+            const weatherData = await weatherResponce.json();
+            const locationData = await locationResponce.json();
+            displayInfo(weatherData,locationData);
         }
 
         //setNumbers();
