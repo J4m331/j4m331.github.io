@@ -15,67 +15,79 @@
         #Tile{
             text-align: left;
             border: 3px solid;
-            border-radius: 24px;
+            border-radius: 36px;
             border-color: white;
             color: r;
             width: 75%;
             margin: auto;
-            padding: 5%;
+            padding: 20px;
         }
 
         #Tile #skyBody{
-            padding-left: 3%;
             width: 50px;
             height: 50px;
             margin: auto;
             border-radius: 50%;
-            background-color: yellow;
-            /*border: 1cm solid;
-            border-style: dashed;
-            border-color: yellow;
-            border-width: 1cm;*/
+            padding-left: 3%;
         }
 
         .sun{
-            border: 1cm solid;
             background-color: yellow;
-            border-style: dashed;
-            border-color: yellow;
+            border: 0.2cm;
+            border-style: groove;
+            border-color: lightblue;
         }
 
         .moon{
-            border: 1cm solid;
-            background-color: gray;
-            border-style: dashed;
-            border-color: gray;
+            background-color: grey;
+            border: 0.2cm;
+            border-style: groove;
+            border-color: darkblue;
         }
 
-        #Tile button h3{
-            text-align: center;
+        .day{
+            background-color: lightblue;
+            border: 3px solid;
+            border-color: white;
+            border-radius: 12px;
         }
 
-        #Tile #Time{
+        .day h3{
+            background-color: lightblue;
+            color: black;
+            text-align: start;
+        }
+        
+        .night{
+            background-color: rgb(0, 0, 90);
+            border: 3px solid;
+            border-color: white;
+            border-radius: 12px;
+        }
+
+        .night h3{
+            background-color: rgb(0, 0, 90);
+            color: white;
+            text-align: start;
+        }
+
+        #Tile h3{
+            text-align: start;
+            padding-left: 5%;
+        }
+
+        #Time{
             text-align: center;
             margin: auto;
         }
-        
-        #Tile h2{
-            text-align: left;
-            color: red;
-            padding-left: 3%;
+
+        .TimeBox{
+            border: 3px solid;
+            border-color: white;
+            border-radius: 6px;
+            padding: 20px;
         }
         
-        #Tile h3{
-            text-align: left;
-            color: red;
-            padding-left: 3%;
-        }
-        
-        #Tile h5{
-            text-align: left;
-            color: red;
-            padding-left: 3%;
-        }
     </style>
 
     <body>
@@ -86,31 +98,27 @@
 
         <!--
             Info Card
-            
 
-        -->
-
-        
-        <div id="Tile">
-            <div style="display: flex;">
-                <div>
+        <div id="Tile" ${timeTileDisplay}>
+            <div style="display: flex;" ${timeTileDisplay}>
+                <div class = "TimeBox">
                     <h1 id = "Time">[${hour}:${minute}]</h1>
                     <h6 id = "Time">(Time recorded)</h6>
                 </div>
-                <button ${timeDisplayBody} id="skyBody"></button>
+                <button ${timeDisplayBody} class="moon" id="skyBody"></button>
             </div>
             <h3>Temperature     : ${weatherInfo.current.temperature_2m}°C</h3>
-            <h5>It feels like ${weatherInfo.current.apparent_temperature}°C</h5>
+            <h3>Feeling like ${weatherInfo.current.apparent_temperature}°C</h3>
             <h3>Humidity        : ${weatherInfo.current.relative_humidity_2m}%</h3>
             <h3>Rain            : ${weatherInfo.current.rain} mm</h3>
             <h3>Wind Speed      : ${weatherInfo.current.wind_speed_10m}km/hr</h3>
             <h3>Wind Direction  : ${windDirection}</h3>
             <h3>Location        : ${areaCounty} ${areaRegion} ${areaState} ${locationData.address.country}</h3>
         </div>
+        -->
 
         <button onclick="fetchInfo()" style="font-size: 35px; width: 250px; height: 125px; font-family: Arial, Helvetica, sans-serif; background-color: black; color: white;">Refresh Data</button>
         
-
     </body>
 
     <script>
@@ -130,11 +138,14 @@
             }
 
             let timeDisplayBody = ``;
+            let timeTileDisplay = ``;
             if(weatherInfo.current.is_day == 1){
                 timeDisplayBody = `class = "sun"`;
+                timeTileDisplay = `class = "day"`;
             }
             else{
                 timeDisplayBody = `class = "moon"`;
+                timeTileDisplay = `class = "night"`;
             }
 
             //WindIDrection
@@ -202,15 +213,15 @@
 
             displayInfoTile += `
             <div id="Tile">
-                <div style="display: flex;">
-                    <div>
+                <div style="display: flex;" ${timeTileDisplay}>
+                    <div class = "TimeBox">
                         <h1 id = "Time">[${hour}:${minute}]</h1>
                         <h6 id = "Time">(Time recorded)</h6>
                     </div>
                     <button ${timeDisplayBody} id="skyBody"></button>
                 </div>
                 <h3>Temperature     : ${weatherInfo.current.temperature_2m}°C</h3>
-                <h5>It feels like ${weatherInfo.current.apparent_temperature}°C</h5>
+                <h3>Feeling like ${weatherInfo.current.apparent_temperature}°C</h3>
                 <h3>Humidity        : ${weatherInfo.current.relative_humidity_2m}%</h3>
                 <h3>Rain            : ${weatherInfo.current.rain} mm</h3>
                 <h3>Wind Speed      : ${weatherInfo.current.wind_speed_10m}km/hr</h3>
@@ -276,6 +287,6 @@
         }
 
         //setNumbers();
-        //fetchInfo();
+        fetchInfo();
     </script>
 </html>
