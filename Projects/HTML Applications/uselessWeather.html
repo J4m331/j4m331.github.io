@@ -81,6 +81,11 @@
             margin: auto;
         }
 
+        #Location{
+            text-align: center;
+            background-color: black;
+        }
+
         .TimeBox{
             border: 3px solid;
             border-color: white;
@@ -99,7 +104,7 @@
         <!--
             Info Card
 
-        <div id="Tile" ${timeTileDisplay}>
+        <div id="Tile">
             <div style="display: flex;" ${timeTileDisplay}>
                 <div class = "TimeBox">
                     <h1 id = "Time">[${hour}:${minute}]</h1>
@@ -117,7 +122,7 @@
         </div>
         -->
 
-        <button onclick="fetchInfo()" style="font-size: 35px; width: 250px; height: 125px; font-family: Arial, Helvetica, sans-serif; background-color: black; color: white;">Refresh Data</button>
+        <button onclick="fetchInfo()" style="font-size: 35px; width: 250px; height: 75px; font-family: Arial, Helvetica, sans-serif; background-color: black; color: white;">Refresh Data</button>
         
     </body>
 
@@ -212,22 +217,22 @@
             let displayInfoTile = ``;
 
             displayInfoTile += `
-            <div id="Tile">
-                <div style="display: flex;" ${timeTileDisplay}>
-                    <div class = "TimeBox">
-                        <h1 id = "Time">[${hour}:${minute}]</h1>
-                        <h6 id = "Time">(Time recorded)</h6>
-                    </div>
-                    <button ${timeDisplayBody} id="skyBody"></button>
+        <div id="Tile">
+            <div style="display: flex;" ${timeTileDisplay}>
+                <div class = "TimeBox">
+                    <h1 id = "Time">[${hour}:${minute}]</h1>
+                    <h6 id = "Time">(Time recorded)</h6>
                 </div>
-                <h3>Temperature     : ${weatherInfo.current.temperature_2m}°C</h3>
-                <h3>Feeling like ${weatherInfo.current.apparent_temperature}°C</h3>
-                <h3>Humidity        : ${weatherInfo.current.relative_humidity_2m}%</h3>
-                <h3>Rain            : ${weatherInfo.current.rain} mm</h3>
-                <h3>Wind Speed      : ${weatherInfo.current.wind_speed_10m}km/hr</h3>
-                <h3>Wind Direction  : ${windDirection}</h3>
-                <h3>Location        : ${areaCounty} ${areaRegion} ${areaState} ${locationData.address.country}</h3>
-            </div>`;
+                <button ${timeDisplayBody} class="moon" id="skyBody"></button>
+            </div>
+            <h3>Temperature     : ${weatherInfo.current.temperature_2m}°C</h3>
+            <h3>Feeling like ${weatherInfo.current.apparent_temperature}°C</h3>
+            <h3>Humidity        : ${weatherInfo.current.relative_humidity_2m}%</h3>
+            <h3>Rain            : ${weatherInfo.current.rain} mm</h3>
+            <h3>Wind Speed      : ${weatherInfo.current.wind_speed_10m}km/hr</h3>
+            <h3>Wind Direction  : ${windDirection}</h3>
+            <h3>Location        : ${areaCounty} ${areaRegion} ${areaState} ${locationData.address.country}</h3>
+        </div>`;
 
             display.innerHTML = displayInfoTile;
         }
@@ -287,6 +292,6 @@
         }
 
         //setNumbers();
-        fetchInfo();
+        //fetchInfo();
     </script>
 </html>
