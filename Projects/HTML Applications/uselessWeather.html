@@ -18,19 +18,45 @@
             border-radius: 24px;
             border-color: white;
             color: r;
-            width: 750px;
+            width: 75%;
             margin: auto;
+            padding: 5%;
         }
 
-        #Tile button{
-            align-self: center;
-            align-content: center;
-            color: red;
+        #Tile #skyBody{
             padding-left: 3%;
+            width: 50px;
+            height: 50px;
+            margin: auto;
+            border-radius: 50%;
+            background-color: yellow;
+            /*border: 1cm solid;
+            border-style: dashed;
+            border-color: yellow;
+            border-width: 1cm;*/
+        }
+
+        .sun{
+            border: 1cm solid;
+            background-color: yellow;
+            border-style: dashed;
+            border-color: yellow;
+        }
+
+        .moon{
+            border: 1cm solid;
+            background-color: gray;
+            border-style: dashed;
+            border-color: gray;
+        }
+
+        #Tile button h3{
+            text-align: center;
         }
 
         #Tile #Time{
             text-align: center;
+            margin: auto;
         }
         
         #Tile h2{
@@ -60,20 +86,27 @@
 
         <!--
             Info Card
-             <div id="Tile">
-                <h1 id = "Time">[${hour}:${minute}]</h1>
-                <h6 id = "Time">(Time recorded)</h6>
-                <h3>Temperature     : ${weatherInfo.current.temperature_2m}°C</h3>
-                <h5>It feels like ${weatherInfo.current.apparent_temperature}°C</h5>
-                <button><h3>Is day          : ${weatherInfo.current.is_day}</h3></button>
-                <h3>Humidity        : ${weatherInfo.current.relative_humidity_2m}%</h3>
-                <h3>Rain            : ${weatherInfo.current.rain} mm</h3>
-                <h3>Wind Speed      : ${weatherInfo.current.wind_speed_10m}km/hr</h3>
-                <h3>Wind Direction  : ${windDirection}</h3>
-                <h3>Location        : ${region} ${locationData.address.country}</h3>
-            </div>
+            
 
         -->
+
+        
+        <div id="Tile">
+            <div style="display: flex;">
+                <div>
+                    <h1 id = "Time">[${hour}:${minute}]</h1>
+                    <h6 id = "Time">(Time recorded)</h6>
+                </div>
+                <button ${timeDisplayBody} id="skyBody"></button>
+            </div>
+            <h3>Temperature     : ${weatherInfo.current.temperature_2m}°C</h3>
+            <h5>It feels like ${weatherInfo.current.apparent_temperature}°C</h5>
+            <h3>Humidity        : ${weatherInfo.current.relative_humidity_2m}%</h3>
+            <h3>Rain            : ${weatherInfo.current.rain} mm</h3>
+            <h3>Wind Speed      : ${weatherInfo.current.wind_speed_10m}km/hr</h3>
+            <h3>Wind Direction  : ${windDirection}</h3>
+            <h3>Location        : ${areaCounty} ${areaRegion} ${areaState} ${locationData.address.country}</h3>
+        </div>
 
         <button onclick="fetchInfo()" style="font-size: 35px; width: 250px; height: 125px; font-family: Arial, Helvetica, sans-serif; background-color: black; color: white;">Refresh Data</button>
         
@@ -94,6 +127,14 @@
             }
             if(minute < 10){
                 minute = "0" + minute;
+            }
+
+            let timeDisplayBody = ``;
+            if(weatherInfo.current.is_day == 1){
+                timeDisplayBody = `class = "sun"`;
+            }
+            else{
+                timeDisplayBody = `class = "moon"`;
             }
 
             //WindIDrection
@@ -149,20 +190,11 @@
                 areaCounty = "";
             }
 
-            console.log(locationData.address.region);
-            console.log(locationData.address.state);
-            console.log(locationData.address.state_district);
-            console.log(locationData.address.county);
-            console.log(locationData.address.country_code);
-
-            let countryFlag = locationData.address.country_code;
-            countryFlag = countryFlag.toUpperCase();
-            console.log(countryFlag);/*
-            for(nation of countryData){
-                if(nation.cca2 == countryFlag){
-                    console.log("Record FOund");
-                }
-            }*/
+            //console.log(locationData.address.region);
+            //console.log(locationData.address.state);
+            //console.log(locationData.address.state_district);
+            //console.log(locationData.address.county);
+            //console.log(locationData.address.country_code);
             
             //Display
             let display = document.querySelector(`#WeatherInfo`);
@@ -170,11 +202,15 @@
 
             displayInfoTile += `
             <div id="Tile">
-                <h1 id = "Time">[${hour}:${minute}]</h1>
-                <h6 id = "Time">(Time recorded)</h6>
+                <div style="display: flex;">
+                    <div>
+                        <h1 id = "Time">[${hour}:${minute}]</h1>
+                        <h6 id = "Time">(Time recorded)</h6>
+                    </div>
+                    <button ${timeDisplayBody} id="skyBody"></button>
+                </div>
                 <h3>Temperature     : ${weatherInfo.current.temperature_2m}°C</h3>
                 <h5>It feels like ${weatherInfo.current.apparent_temperature}°C</h5>
-                <button><h3>Is day          : ${weatherInfo.current.is_day}</h3></button>
                 <h3>Humidity        : ${weatherInfo.current.relative_humidity_2m}%</h3>
                 <h3>Rain            : ${weatherInfo.current.rain} mm</h3>
                 <h3>Wind Speed      : ${weatherInfo.current.wind_speed_10m}km/hr</h3>
@@ -232,14 +268,14 @@
                 console.log("Yes");
                 weatherResponce = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${coordinate[0]}&longitude=${coordinate[1]}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,wind_speed_10m,wind_direction_10m&timeformat=unixtime&timezone=auto&forecast_days=1`);
                 weatherData = await weatherResponce.json();
-                countryResponce = await fetch(`https://restcountries.com/v3.1/all`);
-                countryData = countryResponce.json();
+                //countryResponce = await fetch(`https://restcountries.com/v3.1/all`);
+                //countryData = countryResponce.json();
             }
 
             displayInfo(weatherData,locationData,countryData);
         }
 
         //setNumbers();
-        fetchInfo();
+        //fetchInfo();
     </script>
 </html>
