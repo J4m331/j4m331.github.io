@@ -102,11 +102,29 @@
             border-radius: 6px;
             padding: 5px;
         }
+
+        #InfoBox{
+            border: 3px solid;
+            border-color: white;
+            border-radius: 6px;
+            display: flex;
+            width: 49%;
+            height: 125px;
+        }
+
+        #InfoBox img{
+            margin: auto;
+            align-items: start;
+        }
+
+        #InfoBoxText{
+            margin: auto;
+        }
         
     </style>
 
     <body>
-        <h1>Useless Weather</h1>
+        <h1 style="font-size: 50px;">Useless Weather</h1>
         <div id="WeatherInfo">
 
         </div>
@@ -128,6 +146,8 @@
                     </div>
                 </div>
                 <h2 id = "Location">${areaCounty} ${areaRegion} ${areaState} ${locationData.address.country}</h2>
+                
+                <img src="Thermometer.png" width="100px" height="100px">
                 <h3>Temperature     : ${weatherInfo.current.temperature_2m}°C</h3>
                 <h3>Feeling like ${weatherInfo.current.apparent_temperature}°C</h3>
                 <h3>Humidity        : ${weatherInfo.current.relative_humidity_2m}%</h3>
@@ -138,7 +158,8 @@
 
         -->
 
-        <button onclick="fetchInfo()" style="font-size: 35px; width: 250px; height: 75px; font-family: Arial, Helvetica, sans-serif; background-color: black; color: white;">Refresh Data</button>
+
+        <button onclick="fetchInfo()" style="font-size: 35px; width: 300px; height: 75px; font-family: Arial, Helvetica, sans-serif; background-color: black; color: white;">Get new Report</button>
         
     </body>
 
@@ -185,31 +206,31 @@
             let windDirection = ``;
 
             if(windDirectionData > -1 && windDirectionData < 23){
-                windDirection = "N";
+                windDirection = "N (North)";
             }
             if(windDirectionData > 22 && windDirectionData < 68){
-                windDirection = "NE";
+                windDirection = "NE (NorthEast)";
             }
             if(windDirectionData > 67 && windDirectionData < 113){
-                windDirection = "E";
+                windDirection = "E (East)";
             }
             if(windDirectionData > 112 && windDirectionData < 158){
-                windDirection = "SE";
+                windDirection = "SE (SouthEast)";
             }
             if(windDirectionData > 157 && windDirectionData < 203){
-                windDirection = "S";
+                windDirection = "S (South)";
             }
             if(windDirectionData > 202 && windDirectionData < 248){
-                windDirection = "SW";
+                windDirection = "SW (SouthWest)";
             }
             if(windDirectionData > 247 && windDirectionData < 293){
-                windDirection = "W";
+                windDirection = "W (West)";
             }
             if(windDirectionData > 292 && windDirectionData < 338){
-                windDirection = "NW";
+                windDirection = "NW (NorthWest)";
             }
             if(windDirectionData > 337 && windDirectionData < 360){
-                windDirection = "N";
+                windDirection = "N (North)";
             }
 
             //console.log(windDirection);
@@ -245,23 +266,53 @@
             <div id="Tile">
                 <div style="display: flex;" ${timeTileDisplay}>
                     <div class = "TimeBox">
-                        <h1 id = "Time">[${hour}:${minute}]</h1>
+                        <h1 id = "Time">${hour}:${minute}</h1>
                         <h6 id = "Time">(Time recorded)</h6>
                     </div>
                     <button ${timeDisplayBody} id="skyBody"></button>
                     <img src= ${flag} height="100px" id="Flag">
                     <div class = "TimeBox" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px;">
-                        <h1 id = "Time">[${locationHour}:${locationMinute}]</h1>
+                        <h1 id = "Time">${locationHour}:${locationMinute}</h1>
                         <h6 id = "Time">(Location Time)</h6>
                     </div>
                 </div>
                 <h2 id = "Location">${areaCounty} ${areaRegion} ${areaState} ${locationData.address.country}</h2>
-                <h3>Temperature     : ${weatherInfo.current.temperature_2m}°C</h3>
-                <h3>Feeling like ${weatherInfo.current.apparent_temperature}°C</h3>
-                <h3>Humidity        : ${weatherInfo.current.relative_humidity_2m}%</h3>
+                
+                <div style="display: flex;"">
+                    <div id="InfoBox" style="margin-right: 1%;">
+                        <img src="Thermometer.png" width="75px" height="75px">
+                        <div id="InfoBoxText">
+                            <h2 style = "font-size :30px;">${weatherInfo.current.temperature_2m}°C</h2>
+                            <h5>Feeling like ${weatherInfo.current.apparent_temperature}°C</h5>
+                        </div>
+                    </div>
+                    <div id="InfoBox" style="margin-left: 1%;">
+                        <img src="Humidity.png" width="75px" height="75px">
+                        <div id="InfoBoxText">
+                            <h2 style = "font-size :30px;">${weatherInfo.current.relative_humidity_2m}%</h2>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; margin-top: 1%;">
+                    <div id="InfoBox" style="margin-right: 1%;">
+                        <img src="Wind.png" width="75px" height="75px">
+                        <div id="InfoBoxText">
+                            <h2 style = "font-size :30px; margin-bottom: 0%">${weatherInfo.current.wind_speed_10m}km/hr</h2>
+                            <h5>${windDirection}</h5>
+                        </div>
+                    </div>
+                    <div id="InfoBox" style="margin-left: 1%;">
+                        <img src="CloudCoverage.png" width="75px" height="75px">
+                        <div id="InfoBoxText">
+                            <h2 style = "font-size :30px;">${weatherInfo.current.cloud_cover} %</h2>
+                        </div>
+                    </div>
+                </div>
+
                 <h3>Rain            : ${weatherInfo.current.rain} mm</h3>
-                <h3>Wind Speed      : ${weatherInfo.current.wind_speed_10m}km/hr</h3>
-                <h3>Wind Direction  : ${windDirection}</h3>
+                <h3>Precipitation   : ${weatherInfo.current.precipitation} mm</h3>
+                <h3>Showers         : ${weatherInfo.current.showers} mm</h3>
+                <h3>Snowfall        : ${weatherInfo.current.snowfall} mm</h3>
             </div>`;
 
             display.innerHTML = displayInfoTile;
@@ -317,7 +368,8 @@
             }
             else{
                 console.log("Yes");
-                const weatherResponce = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${coordinate[0]}&longitude=${coordinate[1]}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,wind_speed_10m,wind_direction_10m&timeformat=unixtime&timezone=auto&forecast_days=1`);
+                //const weatherResponce = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${coordinate[0]}&longitude=${coordinate[1]}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,wind_speed_10m,wind_direction_10m&timeformat=unixtime&timezone=auto&forecast_days=1`);
+                const weatherResponce = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${coordinate[0]}&longitude=${coordinate[1]}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,showers,snowfall,cloud_cover,wind_speed_10m,wind_direction_10m&timeformat=unixtime&timezone=auto&forecast_days=1`);
                 const weatherData = await weatherResponce.json();
                 const countryResponce = await fetch(`https://restcountries.com/v3.1/all`);
                 const countryData = await countryResponce.json();
