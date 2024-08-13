@@ -80,16 +80,27 @@
             margin: auto;
         }
 
-        #Location{
-            text-align: center;
-            background-color: black;
-        }
-
         .TimeBox{
             border: 3px solid;
             border-color: white;
             border-radius: 6px;
             padding: 20px;
+        }
+
+        #Flag{
+            border: 3px solid;
+            border-color: white;
+            align-self: center;
+            border-radius: 6px;
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+        }
+
+        #Location{
+            border: 3px solid;
+            border-color: white;
+            border-radius: 6px;
+            padding: 5px;
         }
         
     </style>
@@ -103,22 +114,28 @@
         <!--
             Info Card
 
-        <div id="Tile">
-            <div style="display: flex;" ${timeTileDisplay}>
-                <div class = "TimeBox">
-                    <h1 id = "Time">[${hour}:${minute}]</h1>
-                    <h6 id = "Time">(Time recorded)</h6>
+            <div id="Tile">
+                <div style="display: flex;" ${timeTileDisplay}>
+                    <div class = "TimeBox">
+                        <h1 id = "Time">[${hour}:${minute}]</h1>
+                        <h6 id = "Time">(Time recorded)</h6>
+                    </div>
+                    <button ${timeDisplayBody} id="skyBody"></button>
+                    <img src= ${flag} height="100px" id="Flag">
+                    <div class = "TimeBox" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px;">
+                        <h1 id = "Time">[${locationHour}:${locationMinute}]</h1>
+                        <h6 id = "Time">(Location Time)</h6>
+                    </div>
                 </div>
-                <button ${timeDisplayBody} class="moon" id="skyBody"></button>
+                <h2 id = "Location">${areaCounty} ${areaRegion} ${areaState} ${locationData.address.country}</h2>
+                <h3>Temperature     : ${weatherInfo.current.temperature_2m}°C</h3>
+                <h3>Feeling like ${weatherInfo.current.apparent_temperature}°C</h3>
+                <h3>Humidity        : ${weatherInfo.current.relative_humidity_2m}%</h3>
+                <h3>Rain            : ${weatherInfo.current.rain} mm</h3>
+                <h3>Wind Speed      : ${weatherInfo.current.wind_speed_10m}km/hr</h3>
+                <h3>Wind Direction  : ${windDirection}</h3>
             </div>
-            <h3>Temperature     : ${weatherInfo.current.temperature_2m}°C</h3>
-            <h3>Feeling like ${weatherInfo.current.apparent_temperature}°C</h3>
-            <h3>Humidity        : ${weatherInfo.current.relative_humidity_2m}%</h3>
-            <h3>Rain            : ${weatherInfo.current.rain} mm</h3>
-            <h3>Wind Speed      : ${weatherInfo.current.wind_speed_10m}km/hr</h3>
-            <h3>Wind Direction  : ${windDirection}</h3>
-            <h3>Location        : ${areaCounty} ${areaRegion} ${areaState} ${locationData.address.country}</h3>
-        </div>
+
         -->
 
         <button onclick="fetchInfo()" style="font-size: 35px; width: 250px; height: 75px; font-family: Arial, Helvetica, sans-serif; background-color: black; color: white;">Refresh Data</button>
@@ -133,12 +150,23 @@
             var date = new Date(timestamp * 1000);
             var hour = date.getHours();
             var minute = date.getMinutes();
+            let locationTimeStamp = weatherInfo.current.time + weatherInfo.utc_offset_seconds;
+            var locationDate = new Date(locationTimeStamp * 1000);
+            var locationHour = locationDate.getHours();
+            var locationMinute = locationDate.getMinutes();
 
             if(hour < 10){
                 hour = "0" + hour;
             }
             if(minute < 10){
                 minute = "0" + minute;
+            }
+            
+            if(locationHour < 10){
+                locationHour = "0" + locationHour;
+            }
+            if(locationMinute < 10){
+                locationMinute = "0" + locationMinute;
             }
 
             let timeDisplayBody = ``;
@@ -205,28 +233,10 @@
                 areaCounty = "";
             }
 
-            //console.log(locationData.address.region);
-            //console.log(locationData.address.state);
-            //console.log(locationData.address.state_district);
-            //console.log(locationData.address.county);
-            //console.log(locationData.address.country_code);
-            
-            let code = "";
-            
-            /*
-            for(const country of Object.entries(countryData)){
-                let string = locationData.address.country_code;
-                console.log(string);
-                string = string.toUpperCase();
-                if(country.cca2 === string){
-                    console.log(country.cca2);
-                    code = country.cca2;
-                }
-            }
-                */
+            let flag = getFlag(countryData,locationData.address.country_code);
 
-            console.log(code);
-            
+            console.log(flag);
+
             //Display
             let display = document.querySelector(`#WeatherInfo`);
             let displayInfoTile = ``;
@@ -238,15 +248,20 @@
                         <h1 id = "Time">[${hour}:${minute}]</h1>
                         <h6 id = "Time">(Time recorded)</h6>
                     </div>
-                    <button ${timeDisplayBody} class="moon" id="skyBody"></button>
+                    <button ${timeDisplayBody} id="skyBody"></button>
+                    <img src= ${flag} height="100px" id="Flag">
+                    <div class = "TimeBox" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px;">
+                        <h1 id = "Time">[${locationHour}:${locationMinute}]</h1>
+                        <h6 id = "Time">(Location Time)</h6>
+                    </div>
                 </div>
+                <h2 id = "Location">${areaCounty} ${areaRegion} ${areaState} ${locationData.address.country}</h2>
                 <h3>Temperature     : ${weatherInfo.current.temperature_2m}°C</h3>
                 <h3>Feeling like ${weatherInfo.current.apparent_temperature}°C</h3>
                 <h3>Humidity        : ${weatherInfo.current.relative_humidity_2m}%</h3>
                 <h3>Rain            : ${weatherInfo.current.rain} mm</h3>
                 <h3>Wind Speed      : ${weatherInfo.current.wind_speed_10m}km/hr</h3>
                 <h3>Wind Direction  : ${windDirection}</h3>
-                <h3>Location        : ${areaCounty} ${areaRegion} ${areaState} ${locationData.address.country}</h3>
             </div>`;
 
             display.innerHTML = displayInfoTile;
@@ -268,6 +283,15 @@
             return [latitude,longitude];
         }
 
+        function getFlag(countryData, code){
+            for(let country of countryData){
+                let cCode = code.toUpperCase();
+                if(country.cca2 == cCode){
+                    return country.flags.svg;
+                }
+            }
+        }
+
         async function fetchInfo(){
             let latitude = 0;
             let longitude = 0;
@@ -287,10 +311,6 @@
 
             const locationResponce = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${coordinate[0]}&lon=${coordinate[1]}&format=json`);
             const locationData = await locationResponce.json();
-            //var weatherResponce = null;
-            //var weatherData = null;
-            //var countryResponce = null;
-            //var countryData = null;
             if(locationData.error!=null){
                 console.log("No");
                 fetchInfo();
@@ -300,12 +320,12 @@
                 const weatherResponce = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${coordinate[0]}&longitude=${coordinate[1]}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,wind_speed_10m,wind_direction_10m&timeformat=unixtime&timezone=auto&forecast_days=1`);
                 const weatherData = await weatherResponce.json();
                 const countryResponce = await fetch(`https://restcountries.com/v3.1/all`);
-                const countryData = countryResponce.json();
+                const countryData = await countryResponce.json();
+                
                 displayInfo(weatherData,locationData,countryData);
             }
         }
 
-        //setNumbers();
         fetchInfo();
     </script>
 </html>
