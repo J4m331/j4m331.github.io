@@ -23,6 +23,20 @@
             padding: 20px;
         }
 
+        #Loading{
+            width: 75%;
+            border: 3px solid;
+            border-radius: 36px;
+            border-color: white;
+            margin: auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #LoadingText{
+            margin: auto;
+        }
+
         #Tile #skyBody{
             width: 50px;
             height: 50px;
@@ -114,7 +128,7 @@
 
         #InfoBox img{
             margin: auto;
-            align-items: start;
+            align-self: start;
         }
 
         #InfoBoxText{
@@ -124,7 +138,9 @@
     </style>
 
     <body>
+
         <h1 style="font-size: 50px;">Useless Weather</h1>
+        
         <div id="WeatherInfo">
 
         </div>
@@ -135,32 +151,75 @@
             <div id="Tile">
                 <div style="display: flex;" ${timeTileDisplay}>
                     <div class = "TimeBox">
-                        <h1 id = "Time">[${hour}:${minute}]</h1>
+                        <h1 id = "Time">${hour}:${minute}</h1>
                         <h6 id = "Time">(Time recorded)</h6>
                     </div>
                     <button ${timeDisplayBody} id="skyBody"></button>
                     <img src= ${flag} height="100px" id="Flag">
                     <div class = "TimeBox" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px;">
-                        <h1 id = "Time">[${locationHour}:${locationMinute}]</h1>
+                        <h1 id = "Time">${locationHour}:${locationMinute}</h1>
                         <h6 id = "Time">(Location Time)</h6>
                     </div>
                 </div>
                 <h2 id = "Location">${areaCounty} ${areaRegion} ${areaState} ${locationData.address.country}</h2>
                 
-                <img src="Thermometer.png" width="100px" height="100px">
-                <h3>Temperature     : ${weatherInfo.current.temperature_2m}°C</h3>
-                <h3>Feeling like ${weatherInfo.current.apparent_temperature}°C</h3>
-                <h3>Humidity        : ${weatherInfo.current.relative_humidity_2m}%</h3>
-                <h3>Rain            : ${weatherInfo.current.rain} mm</h3>
-                <h3>Wind Speed      : ${weatherInfo.current.wind_speed_10m}km/hr</h3>
-                <h3>Wind Direction  : ${windDirection}</h3>
+                <div style="display: flex;"">
+                    <div id="InfoBox" style="margin-right: 1%;">
+                        <img src="Thermometer.png" width="75px" height="75px">
+                        <div id="InfoBoxText">
+                            <h2 style = "font-size :30px;">${weatherInfo.current.temperature_2m}°C</h2>
+                            <h5>Feeling like ${weatherInfo.current.apparent_temperature}°C</h5>
+                        </div>
+                    </div>
+                    <div id="InfoBox" style="margin-left: 1%;">
+                        <img src="Humidity.png" width="75px" height="75px">
+                        <div id="InfoBoxText">
+                            <h2 style = "font-size :30px;">${weatherInfo.current.relative_humidity_2m}%</h2>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; margin-top: 1%;">
+                    <div id="InfoBox" style="margin-right: 1%;">
+                        <img src="Wind.png" width="75px" height="75px">
+                        <div id="InfoBoxText">
+                            <h2 style = "font-size :30px; margin-bottom: 0%">${weatherInfo.current.wind_speed_10m}km/hr</h2>
+                            <h5>${windDirection}</h5>
+                        </div>
+                    </div>
+                    <div id="InfoBox" style="margin-left: 1%;">
+                        <img src="CloudCoverage.png" width="75px" height="75px">
+                        <div id="InfoBoxText">
+                            <h2 style = "font-size :30px;">${weatherInfo.current.cloud_cover}%</h2>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; margin-top: 1%;">
+                    <div id="InfoBox" style="margin-right: 1%;">
+                        <img src="Precipitation.png" width="75px" height="75px">
+                        <div id="InfoBoxText">
+                            <h2 style = "font-size :30px;">${actualPrecipitation}mm</h2>
+                        </div>
+                    </div>
+                    <div id="InfoBox" style="margin-left: 1%;">
+                        <img src="Snowfall.png" width="75px" height="75px">
+                        <div id="InfoBoxText">
+                            <h2 style = "font-size :30px;">${weatherInfo.current.snowfall}mm</h2>
+                        </div>
+                    </div>
+                </div>
             </div>
 
+            Loading Card
+
+            <div id="Loading">
+                <div id="LoadingText">
+                    <h2>Fetching new report......</h2>
+                    <h4>Please be patient</h4>
+                </div>
+            </div>
         -->
-
-
         <button onclick="fetchInfo()" style="font-size: 35px; width: 300px; height: 75px; font-family: Arial, Helvetica, sans-serif; background-color: black; color: white;">Get new Report</button>
-        
+        <a href="/Projects/Projects.html"><button style="font-size: 35px; width: 300px; height: 75px; font-family: Arial, Helvetica, sans-serif; background-color: black; color: white;">Return to Projects</button></a>
     </body>
 
     <script>
@@ -233,8 +292,16 @@
                 windDirection = "N (North)";
             }
 
-            //console.log(windDirection);
-            
+            //Precipitation
+
+            let actualPrecipitation = (weatherInfo.current.rain + weatherInfo.current.showers + weatherInfo.current.precipitation)/3;
+
+            actualPrecipitation = actualPrecipitation.toFixed(2);
+
+            if(actualPrecipitation == 0){
+                actualPrecipitation = "0";
+            }
+
             //Location
             if(locationData.error == "Unable to geocode"){
                 fetchInfo();
@@ -304,18 +371,44 @@
                     <div id="InfoBox" style="margin-left: 1%;">
                         <img src="CloudCoverage.png" width="75px" height="75px">
                         <div id="InfoBoxText">
-                            <h2 style = "font-size :30px;">${weatherInfo.current.cloud_cover} %</h2>
+                            <h2 style = "font-size :30px;">${weatherInfo.current.cloud_cover}%</h2>
                         </div>
                     </div>
                 </div>
-
-                <h3>Rain            : ${weatherInfo.current.rain} mm</h3>
-                <h3>Precipitation   : ${weatherInfo.current.precipitation} mm</h3>
-                <h3>Showers         : ${weatherInfo.current.showers} mm</h3>
-                <h3>Snowfall        : ${weatherInfo.current.snowfall} mm</h3>
+                <div style="display: flex; margin-top: 1%;">
+                    <div id="InfoBox" style="margin-right: 1%;">
+                        <img src="Precipitation.png" width="75px" height="75px">
+                        <div id="InfoBoxText">
+                            <h2 style = "font-size :30px;">${actualPrecipitation}mm</h2>
+                        </div>
+                    </div>
+                    <div id="InfoBox" style="margin-left: 1%;">
+                        <img src="Snowfall.png" width="75px" height="75px">
+                        <div id="InfoBoxText">
+                            <h2 style = "font-size :30px;">${weatherInfo.current.snowfall}mm</h2>
+                        </div>
+                    </div>
+                </div>
             </div>`;
 
+            display.innerHTML = ``;
             display.innerHTML = displayInfoTile;
+        }
+
+        function setLoading(){
+            let display = document.querySelector(`#WeatherInfo`);
+            let displayLoading = ``;
+
+            displayLoading += `
+            <div id="Loading">
+                <div id="LoadingText">
+                    <h2>Fetching new report......</h2>
+                    <h4>Please be patient</h4>
+                </div>
+            </div>`;
+
+            display.innerHTML = ``;
+            display.innerHTML = displayLoading;
         }
 
         function setNumbers(){
@@ -363,7 +456,7 @@
             const locationResponce = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${coordinate[0]}&lon=${coordinate[1]}&format=json`);
             const locationData = await locationResponce.json();
             if(locationData.error!=null){
-                console.log("No");
+                setLoading();
                 fetchInfo();
             }
             else{
