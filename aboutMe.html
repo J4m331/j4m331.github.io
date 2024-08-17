@@ -21,31 +21,42 @@
             Hey there, my name is Jameel and I am a current Computer Science
             student at the University of the West Indies, St. Augustine Campus
         </p>
-        <p id="Paragraph">
-            I started coding in 2019 using Pascal in secondary school
+        <p class="Paragraph" id="CareerOrigins">
+            I started programming in 2019 using Pascal in secondary school
             and since then I have been on an incredible journey in 
             programming from basic web development to game development
             in Unity to attempting to create Discord Bots. I started 
             5 years ago and here I am today. 
         </p>
-        <p id="Paragraph">
+        <p class="Paragraph">
             On this website you will find my projects, past, present and
             future. Feel free to explore, experiment and comment on them
             as you browse.
         </p>
-        <p id="Paragraph">
+        <p class="Paragraph">
             Thank you for visiting.
         </p>
 		<script src="script.js"></script>
         <script>
-            let startday = 1567425600;
-            let today = new Date().getTime() / 1000;
-            let difference = today - startday;
-            let time = new Date(difference);
-            console.log(startday);
-            console.log(today);
-            console.log(difference);
-            console.log(time);
+            function setCareerTime(){
+                let startday = 1567425600;
+                let today = new Date().getTime() / 1000;
+                let difference = today - startday;
+                let years = difference/31557600;
+                years = years.toFixed(0);
+
+                let paragraph = document.getElementById("CareerOrigins");
+                let text = `
+                    I started programming in 2019 using Pascal in secondary school
+                    and since then I have been on an incredible journey in 
+                    programming from basic web development to game development
+                    in Unity to attempting to create Discord Bots. I started 
+                    ${years} years ago and here I am today. `;
+
+                paragraph.innerHTML = text;
+            }
+
+            setCareerTime();
         </script>
 	</body>
 
