@@ -23,21 +23,21 @@ a{
 	padding-right: 40px;
 }
 
-.Navbar{
+#Navbar{
 	background-color: #8C1C29;
 	padding: 10px;
+	display: flex;
 }
 
-.NavbarLogo{
+#NavbarLogo{
 	width: 75px;
 	height: 75px;
 	padding: 10px;
+	transition: transform 0.25s;
 }
 
-.NavbarLogo:hover{
-	border-style: double;
-	border-color: #7B85A5;
-	padding: 5px;
+#NavbarLogo:hover{
+	transform: rotate(7.5deg);
 }
 
 .ProjectLink{
@@ -53,33 +53,52 @@ a{
 #ActiveSite{
 	color: #EFEFEF;
 	padding: 10px;
+	margin-top: auto;
+	margin-bottom: auto;
 	background-color: #7B85A5;
 	border-radius: 10px;
+	transition: transform 0.25s;
+}
+
+#ActiveSite a{
 	text-decoration: none;
 	font-size: larger;
+	font-weight: bold;
 }
 
 #ActiveSite:hover{
 	color:#e3e3e3;
 	background-color: #5e657d;
+	transform: rotate(5deg);
 }
 
-#InactiveSite{
-	color: #7B85A5;
+.InactiveSite{
 	padding: 5px;
 	text-decoration: none;
 	border-width: 5px;
 	border-radius: 5px;
+	margin-top: auto;
+	margin-bottom: auto;
 	border-color: #7B85A5;
+	transition: transform 0.25s;
+}
+
+.InactiveSite a{
+	color: #7B85A5;
+	text-decoration: none;
+	font-size: larger;
+	font-weight: bold;
+}
+
+.InactiveSite:hover{
+	color:#5e657d;
+	transform: rotate(5deg);
 }
 
 #DisplayArea{
 	display: grid;
 }
 
-#InactiveSite:hover{
-	color:#5e657d;
-}
 
 /*1086DE Augustine Blue*/
 /*8C1C29 JacketRed*/
