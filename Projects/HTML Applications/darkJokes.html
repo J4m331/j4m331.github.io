@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+
+    <style>
+        *{
+            background-color: black;
+            color: white;
+            font-family: Helvetica;
+            text-align: center;
+        }
+
+        button{
+            padding-left: 25px;
+            padding-right: 25px;
+        }
+
+        #Joke{
+            font-family: 'Times New Roman';
+            margin-left: 15%;
+            margin-right: 15%;
+        }
+    </style>
+
+    <body>
+        <h1>Dark Jokes Generator</h1>
+        <nav>
+        <button onclick="getJoke()"><h3>Get me a Joke</h3></button>
+        <a href="/Projects/Projects.html"><button><h3>I want to Leave</h3></button></a>
+        </nav>
+        <p>Note: If the Joke is too dark, blame the API and not me. ~J</p>
+        <div id="Joke">
+
+        </div>
+
+    </body>
+
+    <script>
+        function writeJoke(joke){
+            let jokeResult = document.querySelector('#Joke');
+            let html = '';
+            if(joke.type === 'single'){
+                html+=`<p>${joke.joke}</p>`;
+            }
+            else
+
+            html+=`<p>${joke.setup}</p><p>${joke.delivery}</p>`;
+            
+            jokeResult.innerHTML = html;
+        }
+
+        async function getJoke(){
+            //https://v2.jokeapi.dev/joke/Programming,Dark
+            
+            //const responce = await fetch('https://v2.jokeapi.dev/joke/Dark');
+            const responce = await fetch('https://v2.jokeapi.dev/joke/Dark');
+            const data = await responce.json();
+            writeJoke(data);
+        }
+    </script>
+</html>
