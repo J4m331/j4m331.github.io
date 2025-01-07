@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+
+    <style>
+        *{
+            background-color: black;
+            color: white;
+            font-family: Helvetica;
+            text-align: center;
+        }
+
+        #NavButton{
+            padding-left: 25px;
+            padding-right: 25px;
+        }
+
+        #Joke{
+            font-family: 'Times New Roman';
+            margin-left: 15%;
+            margin-right: 15%;
+        }
+
+        #Board{
+            display: grid;
+            grid-template-columns: auto auto auto;
+            grid-template-rows: auto auto auto;
+        }
+
+        #Tile{
+            padding: 25%;
+            width: 10%;
+            height: 10%;
+        }
+    </style>
+
+    <body>
+        <h1>Tick Tack Toe</h1>
+        <nav>
+        <button id="NavButton" onclick="resetBoard()"><h3>Reset</h3></button>
+        <a href="/Projects/Projects.html"><button id="NavButton"><h3>I want to Leave</h3></button></a>
+        </nav>
+        <div id="Board">
+        </div>
+
+    </body>
+
+    <script>
+        let turn = 0;
+
+        function createTile(){
+            return {
+                text: " ",
+
+                setBlank(){
+                    this.text = " ";
+                },
+                setX(){
+                    this.text = "X";
+                },
+                setO(){
+                    this.text = "O";
+                },
+                setValue(turn){
+                    if(turn%2 === 0){
+                        this.setX();
+                    }else{
+                        this.setO;
+                    }
+                },
+                getValue(){
+                    return this.text;
+                },
+                display(){
+                    return `<div id="Tile"><button>${this.getValue()}</button></div>`;
+                }
+            };
+        }
+
+        let boardTiles = Array.from({length: 3}, () => Array.from({length: 3}, createTile));
+
+        function setBoard(){
+            for(let i = 0; i <= 2; i++){
+                for(let j = 0; j <=2; j++){
+                    boardTiles[i][j] = boardTiles[i][j].setBlank();
+                }
+            }
+        }
+
+        function resetBoard(){
+            let board = document.querySelector("#Board");
+            let html = ``;
+
+            for(let i = 0; i <= 2; i++){
+                for(let j = 0; j <=2; j++){
+                    html+= boardTiles[i][j].display();
+                }
+            }
+
+            board.innerHTML = html;
+        }
+
+    </script>
+</html>
