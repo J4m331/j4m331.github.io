@@ -52,7 +52,8 @@
 
         function createTile(){
             return {
-                text: " ",
+                text: "default",
+                pressed: false,
 
                 setBlank(){
                     this.text = " ";
@@ -64,17 +65,22 @@
                     this.text = "O";
                 },
                 setValue(turn){
-                    if(turn%2 === 0){
+                    if(turn%2 === 0 && this.pressed === false){
                         this.setX();
+                        turn++;
+                        console.log(turn);
                     }else{
                         this.setO;
+                        turn++;
+                        console.log(turn);
                     }
+                    pressed = true;
                 },
                 getValue(){
                     return this.text;
                 },
                 display(){
-                    return `<div id="Tile"><button>${this.getValue()}</button></div>`;
+                    return `<div id="Tile"><button onclick="${this.setValue(turn)}">${this.getValue()}</button></div>`;
                 }
             };
         }
@@ -101,6 +107,9 @@
 
             board.innerHTML = html;
         }
+
+        setBoard();
+
 
     </script>
 </html>
