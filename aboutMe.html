@@ -56,9 +56,8 @@
                     5 years ago and here I am today. 
                 </p>
                 <p class="Paragraph">
-                    On this website you will find my projects, past, present and
-                    future. Feel free to explore, experiment and comment on them
-                    as you browse.
+                    On this website you will find my projects, past and present.
+                    Feel free to explore and experiment as you browse.
                 </p>
                 <p class="Paragraph">
                     Thank you for visiting.
@@ -76,7 +75,15 @@
                 let today = new Date().getTime() / 1000;
                 let difference = today - startday;
                 let years = difference/31557600;
-                years = years.toFixed(0);
+                years = years.toFixed(1);
+                years = Math.floor(years);
+                let months = (difference - (years * 31557600)) / 2629800;
+                months = months.toFixed(1);
+                months = Math.floor(months);
+                let days = (difference - ((years * 31557600) + (months * 2629800))) / 86400;
+                days = days.toFixed(1);
+                days = Math.floor(days);
+
 
                 let paragraph = document.getElementById("CareerOrigins");
                 let text = `
@@ -84,7 +91,8 @@
                     and since then I have been on an incredible journey in 
                     programming from basic web development to game development
                     in Unity to attempting to create Discord Bots. I started 
-                    ${years} years ago and here I am today. `;
+                    ${years} years, ${months} months and ${days} days ago 
+                    and here I am today. `;
 
                 paragraph.innerHTML = text;
             }
