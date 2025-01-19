@@ -6,6 +6,11 @@
 	</head>
 
 	<style>
+		/*1086DE Augustine Blue*/
+		/*8C1C29 JacketRed*/
+		/*7B8EA5 JacketGray*/
+		/*EFEFEF Augustine White*/
+
 		#secondaryNavbar{
 			background-color: #7B85A5;
 			display: flex;
@@ -26,6 +31,13 @@
 
 		.sectionButton:hover{
 			transform: scale(1.3,1.3);
+			background-color: #1086DE;
+			border-color: #1086DE;
+			color: #EFEFEF;
+		}
+
+		#ProjectDisplay{
+			display: grid;
 		}
 
 		.ProjectLink{
@@ -34,7 +46,7 @@
 
 		.ProjectLink button{
 			width: 40%;
-			/*height: 75px;*/
+			height: 75px;
 			padding-left: 50px;
 			padding-right: 50px;
 			margin-left: none;
@@ -42,11 +54,27 @@
 		}
 
 		.ProjectLink:hover{
-			transform: translate(-30%);
+			transform: translate(-0%);
 		}
 
 		.ProjectLink:hover button{
-			text-transform:uppercase;
+			background-color: #1086DE;
+			border-color: #1086DE;
+			color: #EFEFEF;
+		}
+
+		.ProjectLink:hover .ProjectDescription{
+			width: 60%;
+			height: 75px;
+			height: auto;
+			border: #1086DE;
+			border-style: solid;
+			border-width: 5px;
+			padding: 10px;
+		}
+
+		.ProjectDescription{
+
 		}
 	</style>
 	
@@ -68,46 +96,111 @@
 		</nav>
 
 		<nav id="secondaryNavbar">
-			<button class="sectionButton" onclick="loadHTMLPages()">HTML Pages</button>
+			<button class="sectionButton" onclick="loadHTMLPages(`htmlProjectsData.json?v=1`)">HTML Pages</button>
 			<button class="sectionButton" onclick="loadItchIO()">Itch.io</button>
 		</nav>
 
 		<div id="ProjectDisplay">
-			<div style="display: grid;">
-				<a href="HTML Applications/darkJokes.html" class="ProjectLink"><button><h2>Dark Jokes</h2></button></a>
-				<a href="HTML Applications/uselessWeather/uselessWeather.html" class="ProjectLink"><button><h2>Useless Weather</h2></button></a>
+			<div>
+				<a href="HTML Applications/darkJokes.html" class="ProjectLink" onmouseover="loadProjectDescription()" onmouseout="clearProjectDescription()">
+					<div style="display: inline;"><button><h2>Dark Jokes Generator</h2></button></div>
+				</a>
+				<div style="display: inline;">A</div>
 			</div>
 		</div>
 		
 		<script>
-			async function loadHTMLPages(){
+
+			const htmlProjectsDataFilePath = `htmlProjectsData.json?v=1`;
+
+			async function loadHTMLPages(filePath){
+				const responce = await fetch(filePath);
+				const data = await responce.json();
 				let projectDisplay = document.getElementById("ProjectDisplay");
-				let html = `
-				<div style="display: grid;">
-					<a href="HTML Applications/darkJokes.html" class="ProjectLink"><button><h2>Dark Jokes</h2></button></a>
-					<a href="HTML Applications/uselessWeather/uselessWeather.html" class="ProjectLink"><button><h2>Useless Weather</h2></button></a>
-				</div>`;
+				let html = ``;
+				for(let record of data){
+					let oldTemp = `
+					<a href="${record.path}" class="ProjectLink" onmouseover="loadProjectDescription('${record.id}','${htmlProjectsDataFilePath}')" onmouseout="clearProjectDescription('${record.id}')">
+						<div style="display: inline;"><button><h2>${record.name}</h2></button></div>
+						<div style="display: inline;" id="${record.id}" class="ProjectDescription"></div>
+					</a>`;
+					newRecord = `
+						<div class="ProjectLink">
+							<a href="${record.path}" onmouseover="loadProjectDescription('${record.id}','${htmlProjectsDataFilePath}')" onmouseout="clearProjectDescription('${record.id}')">
+								<div style="display: inline;"><button><h2>${record.name}</h2></button></div>
+							</a>
+							<div style="display: inline;" id="${record.id}" class="ProjectDescription"></div>
+						</div>`;
+					//console.log(record.id);
+					//console.log(record.description);
+					html += newRecord;
+				}
 				projectDisplay.innerHTML = html;
+			}
+
+			async function loadProjectDescription(id,filePath){
+				const responce = await fetch(filePath);
+				const data = await responce.json();
+				let projectDescriptionDisplay = document.getElementById(id);
+				//console.log("Id : " + id);
+				//console.log(projectDescriptionDisplay);
+				/*
+				let html = ``;
+				console.log("Yes");
+				for(let record of data){
+					if(id === record.id){
+						html = record.description;
+					}
+				}
+				projectDescriptionDisplay.innerHTML = html;*/
+				if (projectDescriptionDisplay) {
+				let html = ``;
+				for (let record of data) {
+					if (id === record.id) {
+						html = record.description;
+					}
+				}
+				projectDescriptionDisplay.innerHTML = html;
+				} else {
+					console.error(`Element with id ${id} not found.`);
+				}
+			}
+
+			/*
+			function clearProjectDescription(id){
+				let projectDescriptionDisplay = document.getElementById(id);
+				projectDescriptionDisplay.innerHTML = ``;
+			}*/
+
+			function clearProjectDescription(id) {
+				let projectDescriptionDisplay = document.getElementById(id);
+				if (projectDescriptionDisplay) {
+					projectDescriptionDisplay.innerHTML = ``;
+				} else {
+					console.error(`Element with id ${id} not found.`);
+				}
 			}
 			
 			async function loadItchIO(){
 				let projectDisplay = document.getElementById("ProjectDisplay");
 				let html = `
-				<iframe frameborder="0" src="https://itch.io/embed/3199079?border_width=5&amp;bg_color=000000&amp;fg_color=ffffff&amp;link_color=ff0000&amp;border_color=24f1f9" width="560" height="175"><a href="https://j4m331.itch.io/santas-jet">Santa's Jet by J4m331</a></iframe>
-				<iframe frameborder="0" src="https://itch.io/embed/2847664?border_width=5&amp;bg_color=000000&amp;fg_color=ffffff&amp;link_color=ff0000&amp;border_color=ffffff" width="560" height="175"><a href="https://j4m331.itch.io/illegal-gun">Illegal Gun by J4m331</a></iframe>
-				<iframe frameborder="0" src="https://itch.io/embed/2548273?border_width=5&amp;bg_color=000000&amp;fg_color=dfd5a0&amp;link_color=327345&amp;border_color=e93838" width="560" height="175"><a href="https://j4m331.itch.io/pisza-trip">Pisza Trip by J4m331</a></iframe>
-				<iframe frameborder="0" src="https://itch.io/embed/2429518?border_width=5&amp;bg_color=6ec676&amp;fg_color=000000&amp;link_color=ff0000&amp;border_color=b00000" width="560" height="175"><a href="https://j4m331.itch.io/a-christmas-drive">A Christmas Drive by J4m331</a></iframe>
-				<iframe frameborder="0" src="https://itch.io/embed/2169771?border_width=5&amp;bg_color=000000&amp;fg_color=ffffff&amp;link_color=07f6ff&amp;border_color=07f6ff" width="560" height="175"><a href="https://j4m331.itch.io/neon-angler">Neon Angler by J4m331</a></iframe>
-				<iframe frameborder="0" src="https://itch.io/embed/1843008?border_width=5&amp;bg_color=000000&amp;fg_color=ffffff&amp;link_color=ff0000&amp;border_color=ffffff" width="560" height="175"><a href="https://j4m331.itch.io/labyrnth-of-the-mind">Labyrnth of the Mind by J4m331</a></iframe>
-				<iframe frameborder="0" src="https://itch.io/embed/1618435?border_width=5&amp;bg_color=000000&amp;fg_color=ffffff&amp;link_color=ff0000&amp;border_color=4141c5" width="560" height="175"><a href="https://j4m331.itch.io/aerospace-defenders">AeroSpace Defenders by J4m331</a></iframe>
-				<iframe frameborder="0" src="https://itch.io/embed/1325412?border_width=5&amp;bg_color=000000&amp;fg_color=ffffff&amp;link_color=ff0000&amp;border_color=00ff00" width="560" height="175"><a href="https://j4m331.itch.io/bell-peg">Bell Peg by J4m331</a></iframe>
-				<iframe frameborder="0" src="https://itch.io/embed/1094013?border_width=5&amp;bg_color=000000&amp;fg_color=ffffff&amp;link_color=ffffff&amp;border_color=ffffff" width="560" height="175"><a href="https://j4m331.itch.io/monochrome-mazes-2">Monochrome Mazes 2 by J4m331</a></iframe>
-				<iframe frameborder="0" src="https://itch.io/embed/853270?border_width=5&amp;bg_color=000000&amp;fg_color=ffffff&amp;link_color=ffffff&amp;border_color=ffffff" width="560" height="175"><a href="https://j4m331.itch.io/monochrome-mazes">Monochrome Mazes by J4m331</a></iframe>
-				`;
+				<div style="display: flexbox;">
+					<iframe frameborder="0" src="https://itch.io/embed/3199079?border_width=5&amp;bg_color=000000&amp;fg_color=ffffff&amp;link_color=ff0000&amp;border_color=24f1f9" width="560" height="175"><a href="https://j4m331.itch.io/santas-jet">Santa's Jet by J4m331</a></iframe>
+					<iframe frameborder="0" src="https://itch.io/embed/2847664?border_width=5&amp;bg_color=000000&amp;fg_color=ffffff&amp;link_color=ff0000&amp;border_color=ffffff" width="560" height="175"><a href="https://j4m331.itch.io/illegal-gun">Illegal Gun by J4m331</a></iframe>
+					<iframe frameborder="0" src="https://itch.io/embed/2548273?border_width=5&amp;bg_color=000000&amp;fg_color=dfd5a0&amp;link_color=327345&amp;border_color=e93838" width="560" height="175"><a href="https://j4m331.itch.io/pisza-trip">Pisza Trip by J4m331</a></iframe>
+					<iframe frameborder="0" src="https://itch.io/embed/2429518?border_width=5&amp;bg_color=6ec676&amp;fg_color=000000&amp;link_color=ff0000&amp;border_color=b00000" width="560" height="175"><a href="https://j4m331.itch.io/a-christmas-drive">A Christmas Drive by J4m331</a></iframe>
+					<iframe frameborder="0" src="https://itch.io/embed/2169771?border_width=5&amp;bg_color=000000&amp;fg_color=ffffff&amp;link_color=07f6ff&amp;border_color=07f6ff" width="560" height="175"><a href="https://j4m331.itch.io/neon-angler">Neon Angler by J4m331</a></iframe>
+					<iframe frameborder="0" src="https://itch.io/embed/1843008?border_width=5&amp;bg_color=000000&amp;fg_color=ffffff&amp;link_color=ff0000&amp;border_color=ffffff" width="560" height="175"><a href="https://j4m331.itch.io/labyrnth-of-the-mind">Labyrnth of the Mind by J4m331</a></iframe>
+					<iframe frameborder="0" src="https://itch.io/embed/1618435?border_width=5&amp;bg_color=000000&amp;fg_color=ffffff&amp;link_color=ff0000&amp;border_color=4141c5" width="560" height="175"><a href="https://j4m331.itch.io/aerospace-defenders">AeroSpace Defenders by J4m331</a></iframe>
+					<iframe frameborder="0" src="https://itch.io/embed/1325412?border_width=5&amp;bg_color=000000&amp;fg_color=ffffff&amp;link_color=ff0000&amp;border_color=00ff00" width="560" height="175"><a href="https://j4m331.itch.io/bell-peg">Bell Peg by J4m331</a></iframe>
+					<iframe frameborder="0" src="https://itch.io/embed/1094013?border_width=5&amp;bg_color=000000&amp;fg_color=ffffff&amp;link_color=ffffff&amp;border_color=ffffff" width="560" height="175"><a href="https://j4m331.itch.io/monochrome-mazes-2">Monochrome Mazes 2 by J4m331</a></iframe>
+					<iframe frameborder="0" src="https://itch.io/embed/853270?border_width=5&amp;bg_color=000000&amp;fg_color=ffffff&amp;link_color=ffffff&amp;border_color=ffffff" width="560" height="175"><a href="https://j4m331.itch.io/monochrome-mazes">Monochrome Mazes by J4m331</a></iframe>
+				</div>
+					`;
 				projectDisplay.innerHTML = html;
 			}
 
-			//loadHTMLPages();
+			loadHTMLPages(htmlProjectsDataFilePath);
 		</script>
 	</body>
 

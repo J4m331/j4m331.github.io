@@ -1,0 +1,14 @@
+[
+    {
+        "id": "project00001",
+        "name": "Dark Jokes Generator",
+        "description": "Like some Dark Humour?, this might be for you",
+        "path": "HTML Applications/darkJokes.html"
+    },
+    {
+        "id": "project00002",
+        "name": "Useless Weather",
+        "description": "For a weather report of a completely random place.",
+        "path": "HTML Applications/uselessWeather/uselessWeather.html"
+    }
+]
